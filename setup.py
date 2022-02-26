@@ -26,6 +26,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 setup(
     name='torpy',
     version='1.1.6',
+    zip_safe=False,
     description='Pure python tor protocol implementation',
     long_description=long_description,
     long_description_content_type='text/markdown',
