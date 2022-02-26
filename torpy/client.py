@@ -54,9 +54,9 @@ class TorClient:
         return TorGuard(guard_router, purpose='TorClient', consensus=self._consensus, auth_data=self._auth_data)
 
     @contextmanager
-    def create_circuit(self, hops_count=3, guard_by_flags=None) -> 'ContextManager[TorCircuit]':
+    def create_circuit(self, hops_count=3, exit_ip=None, guard_by_flags=None) -> 'ContextManager[TorCircuit]':
         with self.get_guard(guard_by_flags) as guard:
-            yield guard.create_circuit(hops_count)
+            yield guard.create_circuit(hops_count, exit_ip=exit_ip)
 
     def __enter__(self):
         """Start using the tor client."""

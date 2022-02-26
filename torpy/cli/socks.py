@@ -168,6 +168,7 @@ class Socks5(threading.Thread):
 def main():
     parser = ArgumentParser(description=__doc__, prog=os.path.basename(__file__))
     parser.add_argument('-i', '--ip', default='127.0.0.1', help='ip address to bind to')
+    parser.add_argument('--exit', default=None, help='ipv4 address of exit node')
     parser.add_argument('-p', '--port', default=1050, type=int, help='bind port')
     parser.add_argument('--hops', default=3, help='hops count', type=int)
     parser.add_argument('-v', '--verbose', help='enable verbose output', action='store_true')
@@ -176,7 +177,7 @@ def main():
     register_logger(args.verbose)
 
     tor = TorClient()
-    with tor.create_circuit(args.hops) as circuit, SocksServer(circuit, args.ip, args.port) as socks_serv:
+    with tor.create_circuit(args.hops, exit_ip=args.exit) as circuit, SocksServer(circuit, args.ip, args.port) as socks_serv:
         socks_serv.start()
 
 
