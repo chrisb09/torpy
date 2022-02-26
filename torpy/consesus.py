@@ -345,8 +345,10 @@ class TorConsensus:
         flags = [RouterFlags.Fast, RouterFlags.Running, RouterFlags.Valid, RouterFlags.Exit]
         return self.get_random_router(flags)
     
-    def get_exit_node(self, exit_ip=None, has_dir_port=None, with_renew=True):
+    def get_exit_node(self, exit_ip=None, fast_exit=True, has_dir_port=None, with_renew=True):
         flags = [RouterFlags.Fast, RouterFlags.Running, RouterFlags.Valid, RouterFlags.Exit]
+        if not fast_exit:
+            del flags[RouterFlags.Fast]
         routers = self.get_routers(flags, has_dir_port, with_renew)
         if exit_ip is not None:
             logger.info("Only choose from routers with exit ip '"+str(exit_ip)+"'")

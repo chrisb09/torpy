@@ -581,11 +581,11 @@ class TorCircuit:
         self._circuit_nodes.append(extend_node)
 
     @check_connected
-    def build_hops(self, hops_count, exit_ip=None):
+    def build_hops(self, hops_count, exit_ip=None, fast_exit=True):
         logger.info('Building %i hops circuit...', hops_count)
         while self.nodes_count < hops_count:
             if self.nodes_count == hops_count - 1:
-                router = self._guard.consensus.get_exit_node(exit_ip=exit_ip)
+                router = self._guard.consensus.get_exit_node(exit_ip=exit_ip, fast_exit=fast_exit)
             else:
                 router = self._guard.consensus.get_random_middle_node()
 
