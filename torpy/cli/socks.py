@@ -68,13 +68,15 @@ class SocksServer(object):
         self.ip = ip
         self.port = port
         self.listen_socket = None
+        self.real_port = None
 
     def __enter__(self):
         """Start listen incoming connections."""
         lsock = self.listen_socket = socket.socket(2, 1, 6)
         lsock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         lsock.bind((self.ip, self.port))
-        logger.info('Start socks proxy at %s:%s', self.ip, self.port)
+        logger.info('Start socks proxy at %s:%s', lsock.getsockname()[0], lsock.getsockname()[1])
+        self.real_port = lsock.getsockname()[1] #in case of 0 the os chooses port
         lsock.listen(0)
         return self
 
