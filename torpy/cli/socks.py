@@ -69,6 +69,7 @@ class SocksServer(object):
         self.port = port
         self.listen_socket = None
         self.real_port = None
+        self.closed = None
 
     def __enter__(self):
         """Start listen incoming connections."""
@@ -92,7 +93,9 @@ class SocksServer(object):
             )
 
     def start(self):
-        while True:
+        self.run = True
+        self.closed = False
+        while self.run:
             try:
                 csock, caddr = self.listen_socket.accept()
             except BaseException:
@@ -100,6 +103,10 @@ class SocksServer(object):
                 raise
             logger.info('[socks] Client connected %s', caddr)
             Socks5(self.circuit, csock, caddr).start()
+        self.closed = True
+            
+    def stop(self): #requires another connection to be made before the stop takes effect
+        self.run = False
 
 
 class Socks5(threading.Thread):
