@@ -335,7 +335,10 @@ class TorConsensus:
         :return: router
         """
         routers = self.get_routers(flags, has_dir_port, with_renew)
-        return random.choice(routers)
+        if len(routers) != 0:
+            return random.choice(routers)
+        else:
+            return None
 
     def get_random_guard_node(self, different_flags=None):
         flags = different_flags or [RouterFlags.Guard]

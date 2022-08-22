@@ -98,6 +98,7 @@ class SocksServer(object):
         while self.run:
             try:
                 csock, caddr = self.listen_socket.accept()
+                self.run = False
             except BaseException:
                 logger.info('[socks] Closing by user request')
                 raise
@@ -107,6 +108,7 @@ class SocksServer(object):
             
     def stop(self): #requires another connection to be made before the stop takes effect
         self.run = False
+        self.__exit__(False, None, None)
 
 
 class Socks5(threading.Thread):
